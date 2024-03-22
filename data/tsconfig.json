@@ -1,0 +1,13 @@
+{
+  // "include": ["*"],
+  "extends": "../tsconfig.shared.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    // "baseUrl": ".",
+    "emitDeclarationOnly": false,
+    "outDir": "./types",
+    "declarationDir": "./types",
+  },
+  "exclude": ["./types"]
+
+}

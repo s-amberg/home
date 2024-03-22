@@ -1,0 +1,28 @@
+{
+  "extends": "../tsconfig.base.json",
+  "references": [
+    { "path": "../data" }
+  ],
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./dist",    
+    "typeRoots": ["./node_modules/@types", "./typings"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react"
+  },
+  // "include": [
+  //   "src",
+  // ]
+}

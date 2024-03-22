@@ -1,0 +1,20 @@
+{
+  "name": "todo-project",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build-backend": "npm --prefix ./server run build",
+    "build-frontend": "npm --prefix ./app run build",
+    "build": " npm run build-frontend && npm run build-backend",
+    "start-frontend": "npm --prefix ./app run start",
+    "start-backend": "npm --prefix ./server run dev",
+    "start": "concurrently --kill-others \"npm run start-backend\" \"npm run start-frontend\"",
+    "prod": "cd dist && node .",
+    "tsc": "tsc -b ./tsconfig.packages.json -w"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+  }
+}

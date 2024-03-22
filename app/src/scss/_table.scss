@@ -1,0 +1,10 @@
+.pagination-btn-group {
+    row-gap: 0.5rem;
+    button.active {
+        filter: brightness(80%);
+    }
+    button {
+        // box-sizing: border-box;
+        // width: 6rem;
+    }
+}
