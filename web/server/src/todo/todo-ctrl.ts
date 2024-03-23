@@ -5,6 +5,15 @@ import { Express, Request, Response, Router } from "express";
 
 export class TodoCtrl extends Controller<Todo, TodoDTO> {
 
+
+
+    protected fromDTO = TodoConverter.TodoFromDTO
+    protected toDTO = TodoConverter.TodoToDTO
+
+    constructor(private todoService: TodoService, app: Router) {
+        super(app);
+    }
+
     protected routes(app: Express): void {
 
         app.get("/todos", async (req: Request, res: Response) => {
@@ -27,12 +36,5 @@ export class TodoCtrl extends Controller<Todo, TodoDTO> {
             return savedTodo
         });
     }
-
-    protected fromDTO = TodoConverter.TodoFromDTO
-    protected toDTO = TodoConverter.TodoToDTO
-
-    constructor(private todoService: TodoService, app: Router) {
-        super(app);
-    }
-
+    
 }

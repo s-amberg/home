@@ -5,18 +5,22 @@ import { TodoDAO } from "../dal/todo-dao";
 import { useParams } from "react-router-dom";
 import React from "react";
 import { Todo } from "data/todo/todo";
+import { Loader } from "../../lib/loader";
 
 export function TodoEdit() {
     const {id} = useParams()
     const [todo, setTodo] = useState<Todo>({id: 0, name: " ", description: " ", doneDate: undefined});
     const [todoDAO, _] = useState<TodoDAO>(DIContainer.getDiContainer.todoDAO);
-    
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         const parsedId = (id ? parseInt(id) : undefined)
-        const load = async () => {
+        const load = () => {
             if(parsedId != null) {
-                const dbTodo = await todoDAO.detail(parsedId);
-                if(dbTodo) setTodo(dbTodo)
+                setIsLoading(true)
+                todoDAO.detail(parsedId).then(todo => {
+                    if(todo)setTodo(todo)
+                }).finally(() => setIsLoading(false));
             };
         }
         load()
@@ -46,18 +50,21 @@ export function TodoEdit() {
                     <h1>Edit Todo #{todo.id}</h1>
                 </MDBCardHeader>
                 <MDBCardBody>
-                    <form onSubmit={save}>
-                        <MDBInput name="name" onChange={handleFormChange} value={todo.name} className='mb-4' id='Name' type='text' aria-describedby='textExample1'/>
-                        <MDBInput name="description" onChange={handleFormChange} value={todo.description}  className='mb-4' label='Description' id='description' type='text' aria-describedby='textExample2'/>
-                        <div className='mb-4'>
-                            <MDBCheckbox
-                            id='done-date'
-                            label='Is completed'
-                            checked={todo.doneDate != null}
-                            onChange={(v: ChangeEvent<HTMLInputElement>) => setDone(v)}
-                        /></div>
-                        <MDBBtn className='mb-4' type='submit' block> Save </MDBBtn>
-                    </form>
+                    <Loader isLoading={isLoading}>
+                        <form onSubmit={save}>
+                            <MDBInput name="name" onChange={handleFormChange} value={todo.name} className='mb-4' id='Name' type='text' aria-describedby='textExample1'/>
+                            <MDBInput name="description" onChange={handleFormChange} value={todo.description}  className='mb-4' label='Description' id='description' type='text' aria-describedby='textExample2'/>
+                            <div className='mb-4'>
+                                <MDBCheckbox
+                                id='done-date'
+                                label='Is completed'
+                                checked={todo.doneDate != null}
+                                onChange={(v: ChangeEvent<HTMLInputElement>) => setDone(v)}
+                            /></div>
+                            <MDBBtn className='mb-4' type='submit' block> Save </MDBBtn>
+                        </form>
+                    </Loader>
+                    
                 </MDBCardBody>
             </MDBCard>
             }

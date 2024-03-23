@@ -1,4 +1,4 @@
-import { MDBCol, MDBContainer, MDBRow } from "mdb-react-ui-kit"
+import { MDBCard, MDBCardBody, MDBCardHeader, MDBContainer } from "mdb-react-ui-kit"
 import React from "react"
 
 export function Engravings() {
@@ -6,12 +6,17 @@ export function Engravings() {
 
     return (
         <MDBContainer>
-            
-            <MDBRow>
-                <MDBCol>
-                    <h1>Engravings</h1>
-                </MDBCol>
-            </MDBRow>
+            <MDBCard>
+
+                <MDBCardHeader>
+                <h1>Engravings</h1>
+                </MDBCardHeader>
+
+                <MDBCardBody>
+
+                </MDBCardBody>
+
+            </MDBCard>
         
         </MDBContainer>
     )

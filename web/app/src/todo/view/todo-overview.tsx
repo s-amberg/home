@@ -6,20 +6,27 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { PaginatedTable } from "../../lib/paginated-table";
 import React from "react";
+import { Loader } from "../../lib/loader";
 
 export function TodoOverview() {
 
-    const todoDAO: TodoDAO = DIContainer.getDiContainer.todoDAO;
+    const [todoDAO, _] = useState<TodoDAO>(DIContainer.getDiContainer.todoDAO);
     const [todos, setTodos] = useState<Todo[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     
     useEffect(() => {
-        const load = async () => {
-            setTodos(await todoDAO.listTodos());
+        const load = () => {
+            
+            setIsLoading(true);
+            todoDAO.listTodos().then(todos => {
+                setIsLoading(false);
+                setTodos(todos);
+            }).catch(e => setIsLoading(false))
+            
         }
         load();
     }, [todoDAO])
-    console.info("overview render")
 
     const todoTable = (todos: Todo[]) => {
 
@@ -58,7 +65,7 @@ export function TodoOverview() {
                 </MDBCardHeader>
                 <MDBCardBody>
 
-                    <PaginatedTable itemsPerPage={10} items={todos} table={todoTable}/>
+                    <Loader isLoading={isLoading} children={<PaginatedTable itemsPerPage={10} items={todos} table={todoTable}/>}></Loader>
                     
                 </MDBCardBody>
             </MDBCard>

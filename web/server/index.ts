@@ -10,16 +10,18 @@ dotenv.config({
 });
 
 const app: Express = express();
-const router: Router = express.Router()
 const port = process.env.PORT || 8080;
 const service = new TodoService();
 
-
 app.use(CORS)
+
+//Routing
+const router: Router = express.Router()
 
 new TodoCtrl(service, router);
 
 app.use('/api', router)
+//Routing
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Todo express server");

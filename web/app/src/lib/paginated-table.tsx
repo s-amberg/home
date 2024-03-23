@@ -23,13 +23,20 @@ export function PaginatedTable<T>({itemsPerPage, items, table}: {itemsPerPage: n
     const totalPages = (numItems: number, itemsPerPage: number) => ((numItems + itemsPerPage - 1) / itemsPerPage)
     const pagesArray = (page: number, numItems: number, itemsPerPage: number): number[] => {
         //  [p-2, p-1, p, p+1, p+2]
-        const numPages = 5;
-        return Array.from({length: (numPages)}, (_, i) => i + page - 2).filter(i => i > 0 && i <= totalPages(numItems, itemsPerPage))
+        const numPages =  totalPages(numItems, itemsPerPage);
+        const shownPages = Math.min(5, numPages);
+        const padding = Math.floor(shownPages/2)
+
+        const middleLow = Math.max(1 + padding, page) //lower bound check
+        const middle = Math.min(middleLow, numPages - padding) //upper bound check
+
+        console.info({middleLow}, {middle})
+
+        return Array.from({length: (shownPages)}, (_, i) => i + middle - padding)
     }
 
     return(
         <MDBContainer>
-            {page}
             <MDBRow>
                 {table(shownItems)}
             </MDBRow>
