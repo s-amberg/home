@@ -1,0 +1,30 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: expressreact
+    container_name: express
+    restart: unless-stopped
+    # env_file: 
+    #   - path: .env
+    #     required: true
+    environment:
+      - PORT=$SERVER_PORT 
+      - NODE_ENV=$MODE
+    ports:
+      - "80:$SERVER_PORT"
+    # volumes:
+      # - node_modules:/home/node/app/node_modules
+    networks:
+      - app-network
+    command: node server.js
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:

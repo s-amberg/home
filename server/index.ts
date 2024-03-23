@@ -20,7 +20,6 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Todo express server");
 });
 
-
 app.use(express.static("build"))
 
 app.listen(port, () => {
