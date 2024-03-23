@@ -1,5 +1,5 @@
 import { HttpClient } from "app/src/lib/dal/http";
-import { Todo, TodoDTO, TodoFromDTO, TodoToDTO } from "../../../../data/types/todo/todo";
+import { Todo, TodoDTO, TodoConverter } from "../../../../data/types/todo/todo";
 
 export class TodoDAO {
 
@@ -9,7 +9,7 @@ export class TodoDAO {
 
     async listTodos(): Promise<Todo[]> {
         const todosDTO = (await this.httpClient.get("/todos")) as TodoDTO[]
-        const todos = todosDTO.map(todo => TodoFromDTO(todo));
+        const todos = todosDTO.map(todo => TodoConverter.TodoFromDTO(todo));
 
         console.info({todos})
         return todos;
@@ -17,14 +17,14 @@ export class TodoDAO {
 
     async detail(id: number): Promise<Todo|undefined> {
         const todo = (await this.httpClient.get(`/todo/${id}`)) as TodoDTO
-        return TodoFromDTO(todo);  
+        return TodoConverter.TodoFromDTO(todo);  
     }
 
     async save(todo: Todo): Promise<Todo> {
-        const dto = TodoToDTO(todo)
+        const dto = TodoConverter.TodoToDTO(todo)
         const newTodo = (await this.httpClient.post(`/todo/`, dto)) as TodoDTO
 
-        return Promise.resolve(TodoFromDTO(newTodo));
+        return Promise.resolve(TodoConverter.TodoFromDTO(newTodo));
     }
 
 }

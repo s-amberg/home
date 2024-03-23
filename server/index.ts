@@ -11,32 +11,13 @@ dotenv.config({
 const app: Express = express();
 const port = process.env.PORT || 8080;
 const service = new TodoService();
-const todoCtrl = new TodoCtrl(service);
+
 
 app.use(CORS)
+new TodoCtrl(service, app);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Todo express server");
-});
-
-app.get("/todos", async (req: Request, res: Response) => {
-  const todos = await todoCtrl.list();
-
-  res.send(todos);
-});
-
-app.get("/todo/:id", async (req: Request, res: Response) => {
-  const id = parseInt(req.params['id']);
-  const todo = await todoCtrl.detail(id);
-
-  res.send({todo});
-});
-
-app.post("/todo", async (req: Request, res: Response) => {
-  const todo = req.body.json();
-  const saved = await todoCtrl.save(todo);
-
-  res.send(saved);
 });
 
 

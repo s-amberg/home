@@ -46,7 +46,7 @@ export class HttpClient {
             Accept: "application/json",
             },
             body: JSON.stringify(params),
-        }).then(this.checkStatus);
+        }).then((e) => this.checkStatus(e));
     }
       
     postAuthenticatedJson(endpoint: string, token: string, params: object) {
@@ -58,6 +58,6 @@ export class HttpClient {
             Accept: "application/json",
           },
           body: JSON.stringify(params),
-        }).then(this.checkStatus);
+        }).then((e) => this.checkStatus(e));
     }
 }

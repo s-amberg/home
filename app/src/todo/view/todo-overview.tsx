@@ -1,5 +1,5 @@
 import { MDBCard, MDBCardBody, MDBCardHeader, MDBContainer, MDBIcon, MDBTable, MDBTableBody, MDBTableHead } from "mdb-react-ui-kit";
-import {Todo} from "../../../../data/todo/todo"
+import {Todo} from "data/todo/todo"
 import { TodoDAO } from "../dal/todo-dao";
 import { DIContainer } from "../../DIContainer";
 import { useEffect, useState } from "react";
