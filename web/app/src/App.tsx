@@ -23,7 +23,7 @@ function App() {
           <MDBNavbar expand="md" light bgColor='light' className="mb-4" sticky>
             <MDBContainer fluid>
 
-              <MDBNavbarBrand href="/">
+              <MDBNavbarBrand tag={Link} to="/">
                 Home
               </MDBNavbarBrand>
               <MDBNavbarToggler 
@@ -70,7 +70,7 @@ function App() {
   return (
     <MDBContainer fluid className="bg-image app-bg-image">
       
-      <BrowserRouter basename="/">
+      <BrowserRouter basename="/app">
         <NavBar></NavBar>
         <AppRoutes/>
       </BrowserRouter>

@@ -1,7 +1,7 @@
 import { TodoService } from "./todo-service";
 import { Todo, TodoDTO, TodoConverter } from '../../../data/types/todo/todo';
 import { Controller } from "../middleware/controller";
-import { Express, Request, Response } from "express";
+import { Express, Request, Response, Router } from "express";
 
 export class TodoCtrl extends Controller<Todo, TodoDTO> {
 
@@ -31,7 +31,7 @@ export class TodoCtrl extends Controller<Todo, TodoDTO> {
     protected fromDTO = TodoConverter.TodoFromDTO
     protected toDTO = TodoConverter.TodoToDTO
 
-    constructor(private todoService: TodoService, app: Express) {
+    constructor(private todoService: TodoService, app: Router) {
         super(app);
     }
 

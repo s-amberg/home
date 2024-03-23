@@ -1,6 +1,6 @@
 export class HttpClient {
 
-    backend: string = "http://localhost:8080";
+    backend: string = "http://localhost:8080/api";
 
     checkStatus(response: Response): Promise<any> {
       return new Promise((resolve, reject) => {

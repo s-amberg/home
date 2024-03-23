@@ -1,26 +1,37 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, Router, Request, Response } from "express";
 import dotenv from "dotenv";
 import { TodoService } from "./src/todo/todo-service";
 import { CORS } from "./src/middleware/cors";
 import { TodoCtrl } from "./src/todo/todo-ctrl";
+import path from "path";
 
 dotenv.config({
     path: "./.env"
 });
 
 const app: Express = express();
+const router: Router = express.Router()
 const port = process.env.PORT || 8080;
 const service = new TodoService();
 
 
 app.use(CORS)
-new TodoCtrl(service, app);
+
+new TodoCtrl(service, router);
+
+app.use('/api', router)
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Todo express server");
 });
 
-app.use(express.static("build"))
+const appBaseName = '/app'
+app.use(appBaseName, express.static("build"))
+
+// app.use(appBaseName, express.static(path.join(__dirname, "build", "index.html")))
+app.get(appBaseName + "/*", function (req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
