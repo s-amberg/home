@@ -24,5 +24,5 @@ RUN npm run build
 
 FROM node:20-alpine
 COPY --from=build /home/node/app/dist /
-EXPOSE 8080
+EXPOSE ${PORT}
 CMD ["node", "server.js"]

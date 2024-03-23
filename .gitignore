@@ -1,5 +1,1 @@
-# production
-node_modules
-/dist
-*.tsbuildinfo
-*.env
+nginx/ssl

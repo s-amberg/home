@@ -1,0 +1,24 @@
+
+upstream loadbalancer {
+  server web1:${SERVER_PORT};
+  server web2:${SERVER_PORT};
+}
+
+server {
+  listen 80;
+  server_name localhost;
+  location / {
+    proxy_pass http://loadbalancer;
+  }
+}
+
+server {
+  listen 443;
+  server_name localhost;
+  
+  include snippets/ssl-params.conf;
+
+  location / {
+    proxy_pass http://loadbalancer;
+  }
+}

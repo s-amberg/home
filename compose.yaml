@@ -1,0 +1,30 @@
+
+services:
+  web1:
+    restart: on-failure
+    build: ./web
+    hostname: web1
+    environment:
+      - PORT=$SERVER_PORT 
+      - NODE_ENV=$MODE
+    ports:
+      - '81:$SERVER_PORT'
+  web2:
+    restart: on-failure
+    build: ./web
+    hostname: web2
+    environment:
+      - PORT=$SERVER_PORT 
+      - NODE_ENV=$MODE
+    ports:
+      - '82:$SERVER_PORT'
+  nginx:
+    build: ./nginx
+    environment:
+      - SERVER_PORT=$SERVER_PORT
+    ports:
+    - '80:80'
+    - '443:443'
+    depends_on:
+    - web1
+    - web2
