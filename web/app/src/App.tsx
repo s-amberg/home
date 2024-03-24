@@ -37,10 +37,10 @@ function App() {
                   <MDBNavbarItem>
                     <MDBNavbarLink
                       tag={Link}
-                      active={pathName === "/engravings"}
-                      to={"/engravings"}
+                      active={pathName === "/connector"}
+                      to={"/connector"}
                     >
-                      Engravings
+                      DB Connector
                     </MDBNavbarLink>
                   </MDBNavbarItem>
                   <MDBNavbarItem>

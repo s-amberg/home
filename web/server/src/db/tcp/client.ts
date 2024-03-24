@@ -1,11 +1,23 @@
 import Net from "net"
+import { Startup } from "./startup";
 
+
+/* 
+sources: 
+    https://www.postgresql.org/docs/current/protocol-message-formats.html#PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONKERBEROSV5
+    https://www.postgresql.org/docs/current/protocol-flow.html#PROTOCOL-FLOW-START-UP
+    https://ankushchadda.in/posts/postgres-understanding-the-wire-protocol/#startup-phase
+    https://github.com/adelsz/pgtyped/pull/239/files#diff-30c1466f6605ea3854c9d99a3850d2a6e729af2345bdc813ec026e9358180873
+    https://github.com/sunng87/pgwire/blob/master/src/messages/startup.rs
+*/
 export class TCPClient {
     
     port = 5432;
     host = 'localhost' 
 
     client = new Net.Socket();
+    startup: Startup;
+
     logger: (m: string) => void;
 
     constructor(logger: (m: string) => void) {
@@ -13,35 +25,8 @@ export class TCPClient {
             logger(m)
             console.info(m)
         }
-    }
 
-    startupmessage(userName: string, database: string): Uint8Array {
-
-        const buffer_size = 22 + userName.length + 1 + database.length + 1 + 1;
-        const startUpMessage = Buffer.alloc(buffer_size);
-        let position_in_buffer = 0;
-    
-        startUpMessage.writeUInt32BE(buffer_size, 0);
-        position_in_buffer += 4;
-    
-        startUpMessage.writeUInt32BE(196608, position_in_buffer); //version 3.0
-        position_in_buffer += 4;
-    
-        position_in_buffer = this.addMessageSegment(startUpMessage, "user", position_in_buffer);
-        position_in_buffer = this.addMessageSegment(startUpMessage, userName, position_in_buffer);
-    
-        position_in_buffer = this.addMessageSegment(startUpMessage, "database", position_in_buffer);
-        position_in_buffer = this.addMessageSegment(startUpMessage, database, position_in_buffer);
-    
-        //Add the last null terminator to the buffer
-        this.addNullTerminatorToMessageSegment(startUpMessage, position_in_buffer);
-    
-        this.logger("The StartUpMessage looks like this in Hexcode: " + startUpMessage.toString('hex'));
-        this.logger("The length of the StartupMessage in Hexcode is: " + startUpMessage.toString('hex').length);
-    
-
-        
-        return startUpMessage;
+        this.startup = new Startup(this.logger)
     }
 
     addMessageSegment = (StartUpMessage: Buffer, message_segment: string, position_in_buffer: number) => {
@@ -68,11 +53,14 @@ export class TCPClient {
     };
 
     connect() {
+        this.logger('-------------- connecting to DB --------------');
         this.client.on('connect', () => {
             this.logger('TCP connection established with the server.');
 
-            this.write(this.startupmessage("simon", "todo"));
+            this.write(this.startup.startupmessage(process.env.POSTGRE_USER ?? 'postgres', "todo"));
         })
+
+        
         this.client.connect({ port: this.port, host: this.host }, () => {
             // If there is no error, the server has accepted the request and created a new 
             // socket dedicated to us.
@@ -89,29 +77,29 @@ export class TCPClient {
     }
 
     write(message: Uint8Array) {
-        this.logger(`writing, ${message}`)
+        this.logger(`writing, ${message.map(b => b).join(" ")}`)
         this.client.write(message, (error) => {console.info('tcp write error', {error})});
     }
    
     onRecieve(chunks: Buffer) {
         this.logger(`Data received from the server: ${chunks.toString()}.`);
 
+        const getResponse = (type: string) => {
+            switch(type) {
+                case (this.startup.authenticationByte): return this.startup.authRequest(chunks)
+            }
+            return undefined
+        }
+
         const type = chunks.readUInt8();
         this.logger(`type ${type}`)
-        switch(String.fromCharCode(type)) {
-            case 'R': this.authRequest(chunks)
-        }
+        const response = getResponse(String.fromCharCode(type))
+        if(response) this.write(response)
+
+
+       
                 
         // Request an end to the connection after the data has been received.
-    }
-
-    authRequest(chunks: Buffer) {
-        this.logger('authentication request')
-        const type = chunks.readUInt8(0);
-        const length = chunks.readUInt32BE(1);
-        const third = chunks.readUInt32BE(5);
-
-        this.logger(`authentication request ${type} ${length} ${third}`)
     }
     
 }

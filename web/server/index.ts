@@ -26,7 +26,8 @@ app.use('/api', router)
 //Routing
 
 const ioSocket = new DBFrontend(app)
-new TCPClient((m: string) => ioSocket.sendMessage(m)).connect()
+const tcpClient = new TCPClient((m: string) => ioSocket.sendMessage(m))
+tcpClient.connect()
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Todo express server");

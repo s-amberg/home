@@ -32,6 +32,13 @@ export class DBFrontend {
                 console.log(reason)
                 clearInterval(interval)
             })
+        
+            socket.on('reload', (reason: any)=>{
+                console.log('reload')
+                this.messageQueue.history.forEach(historyEntry => {
+                  this.ioServer.to('clock-room').emit('message', historyEntry)
+                })
+            })
         })
         
 
@@ -48,6 +55,7 @@ export class DBFrontend {
 
 class Queue<T> {
     private storage: T[] = [];
+    history: T[] = [];
   
     constructor(private capacity: number = Infinity) {}
   
@@ -58,7 +66,9 @@ class Queue<T> {
       this.storage.push(item);
     }
     dequeue(): T | undefined {
-      return this.storage.shift();
+      const returning =  this.storage.shift();
+      if(returning) this.history.push(returning)
+      return returning
     }
     size(): number {
       return this.storage.length;
