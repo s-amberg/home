@@ -1,1 +1,3 @@
 nginx/ssl
+postgres/apprentice/data
+postgres/master/data

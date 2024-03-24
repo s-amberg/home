@@ -65,7 +65,7 @@ export function TodoOverview() {
                 </MDBCardHeader>
                 <MDBCardBody>
 
-                    <Loader isLoading={isLoading} children={<PaginatedTable itemsPerPage={10} items={todos} table={todoTable}/>}></Loader>
+                    <Loader isLoading={isLoading}><PaginatedTable itemsPerPage={10} items={todos} table={todoTable}/></Loader>
                     
                 </MDBCardBody>
             </MDBCard>

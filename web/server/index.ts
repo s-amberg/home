@@ -4,6 +4,8 @@ import { TodoService } from "./src/todo/todo-service";
 import { CORS } from "./src/middleware/cors";
 import { TodoCtrl } from "./src/todo/todo-ctrl";
 import path from "path";
+import { DBFrontend } from "./src/db/frontend";
+import { TCPClient } from "./src/db/tcp/client";
 
 dotenv.config({
     path: "./.env"
@@ -22,6 +24,9 @@ new TodoCtrl(service, router);
 
 app.use('/api', router)
 //Routing
+
+const ioSocket = new DBFrontend(app)
+new TCPClient((m: string) => ioSocket.sendMessage(m)).connect()
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Todo express server");
