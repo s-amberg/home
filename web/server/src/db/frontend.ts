@@ -2,6 +2,7 @@ const io = require('socket.io')
 import http, { Server } from 'http'
 
 import { Express} from "express"
+import { Queue } from './tcp/utils'
 
 export class DBFrontend {
 
@@ -52,25 +53,3 @@ export class DBFrontend {
         this.messageQueue.enqueue(message)
     }
 }
-
-class Queue<T> {
-    private storage: T[] = [];
-    history: T[] = [];
-  
-    constructor(private capacity: number = Infinity) {}
-  
-    enqueue(item: T): void {
-      if (this.size() === this.capacity) {
-        throw Error("Queue has reached max capacity, you cannot add more items");
-      }
-      this.storage.push(item);
-    }
-    dequeue(): T | undefined {
-      const returning =  this.storage.shift();
-      if(returning) this.history.push(returning)
-      return returning
-    }
-    size(): number {
-      return this.storage.length;
-    }
-  }

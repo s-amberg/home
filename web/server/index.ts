@@ -6,6 +6,7 @@ import { TodoCtrl } from "./src/todo/todo-ctrl";
 import path from "path";
 import { DBFrontend } from "./src/db/frontend";
 import { TCPClient } from "./src/db/tcp/client";
+// import { pgConnect } from "./src/dal/pg";
 
 dotenv.config({
     path: "./.env"
@@ -28,6 +29,7 @@ app.use('/api', router)
 const ioSocket = new DBFrontend(app)
 const tcpClient = new TCPClient((m: string) => ioSocket.sendMessage(m))
 tcpClient.connect()
+// pgConnect()
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Todo express server");
