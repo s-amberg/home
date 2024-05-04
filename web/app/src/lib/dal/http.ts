@@ -1,6 +1,6 @@
 export class HttpClient {
 
-    backend: string = "http://localhost:8080/api";
+    backend: string = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/api`;
 
     checkStatus(response: Response): Promise<any> {
       return new Promise((resolve, reject) => {
@@ -28,6 +28,7 @@ export class HttpClient {
         return this.getAuthenticatedJson(endpoint, "token")
     }
     async getAuthenticatedJson(endpoint: string, token: string) {
+      console.info(this.backend)
         const response = await fetch(`${this.backend}${endpoint}`, {
             method: "GET",
             headers: {

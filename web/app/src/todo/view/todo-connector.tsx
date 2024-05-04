@@ -10,7 +10,7 @@ export function DbConnector() {
     const [socket, setSocket] = React.useState<Socket|undefined>(undefined)
 
     React.useEffect(()=>{
-        setSocket(io('http://localhost:5000'))    
+        setSocket(io('http://localhost:' + process.env.REACT_APP_SERVER_PORT_IO))    
      }, [])
 
     React.useEffect(() => {

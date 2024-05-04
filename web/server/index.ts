@@ -13,7 +13,7 @@ dotenv.config({
 });
 
 const app: Express = express();
-const port = process.env.PORT || 8080;
+const port = process.env.SERVER_PORT || 3000;
 const service = new TodoService();
 
 app.use(CORS)

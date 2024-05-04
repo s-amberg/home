@@ -9,11 +9,12 @@ services:
     build: ./web
     hostname: web1
     environment:
-      - PORT=$SERVER_PORT 
+      - SERVER_PORT=$SERVER_PORT 
       - NODE_ENV=$MODE
       - POSTGRES_USER=$POSTGRES_USER
       - POSTGRES_PW=$POSTGRES_PW
       - POSTGRES_PORT=$POSTGRES_PORT
+      - POSTGRES_HOST=$POSTGRES_HOST
     expose:
       - $SERVER_PORT
     depends_on:
@@ -33,6 +34,7 @@ services:
       - POSTGRES_USER=$POSTGRES_USER
       - POSTGRES_PW=$POSTGRES_PW
       - POSTGRES_PORT=$POSTGRES_PORT
+      - POSTGRES_HOST=$POSTGRES_HOST
     expose:
       - $SERVER_PORT
     depends_on:

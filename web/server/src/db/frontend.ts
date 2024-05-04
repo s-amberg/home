@@ -8,13 +8,13 @@ export class DBFrontend {
 
     server: Server
     ioServer
-    port = 5000
+    port = process.env.IO_PORT
     messageQueue: Queue<string> = new Queue();
 
     constructor(app: Express) {
         this.server = http.createServer(app)
         this.ioServer = io(this.server, {
-            cors: {origin: 'http://localhost:3000'}
+            cors: {origin: `http://localhost:${process.env.PORT}`}
         })
 
         this.ioServer.on('connection', (socket: any)=>{

@@ -79,7 +79,7 @@ export class TCPClient {
     }
 
     connect() {
-        this.logger('-------------- connecting to DB --------------');
+        this.logger(`-------------- connecting to DB ${this.host}:${this.port}--------------`);
         this.client.connect({ port: this.port, host: this.host });
     }
 
