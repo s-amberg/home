@@ -19,8 +19,8 @@ export type Message = {
 }
 
 export class TCPClient {
-    
-    port = 5432;
+
+    port = parseInt(process.env.POSTGRES_PORT ?? "5432");
     host = 'localhost' 
     attempts = 0;
     maxAttempts = 10;
@@ -64,8 +64,8 @@ export class TCPClient {
             // this.reconnect()
         });
 
-        this.client.on('error', () => {
-            this.logger('Error in TCP Connection');
+        this.client.on('error', (e) => {
+            this.logger('Error in TCP Connection' + 'error: ' + e + e.message);
             this.reconnect()
         });
     }

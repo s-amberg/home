@@ -1,6 +1,6 @@
 services:
   master:
-    image: postgres:latest
+    image: postgres
     environment:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PW
@@ -8,11 +8,15 @@ services:
       - ./master/data:/var/lib/postgresql/data
       - ./master/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "$POSTGRES_PORT:$POSTGRES_PORT"
+      - "$POSTGRES_PORT:5432"
     restart: always
+    networks:
+      - db-net
 
+
+        
   apprentice:
-    image: postgres:latest
+    image: postgres
     environment:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PW
@@ -21,3 +25,9 @@ services:
     volumes:
       - ./apprentice/data:/var/lib/postgresql/data
     restart: always
+    networks:
+      - db-net
+
+networks:
+  db-net:
+    driver: bridge

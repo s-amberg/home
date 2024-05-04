@@ -1,5 +1,9 @@
+include:
+  - path: postgres/compose.yaml
+    env_file: .env
 
 services:
+
   web1:
     restart: on-failure
     build: ./web
@@ -7,8 +11,18 @@ services:
     environment:
       - PORT=$SERVER_PORT 
       - NODE_ENV=$MODE
-    ports:
-      - '81:$SERVER_PORT'
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PW=$POSTGRES_PW
+      - POSTGRES_PORT=$POSTGRES_PORT
+    expose:
+      - $SERVER_PORT
+    depends_on:
+      - master
+      - apprentice
+    networks:
+      - db-net
+      - front-net
+
   web2:
     restart: on-failure
     build: ./web
@@ -16,8 +30,19 @@ services:
     environment:
       - PORT=$SERVER_PORT 
       - NODE_ENV=$MODE
-    ports:
-      - '82:$SERVER_PORT'
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PW=$POSTGRES_PW
+      - POSTGRES_PORT=$POSTGRES_PORT
+    expose:
+      - $SERVER_PORT
+    depends_on:
+      - master
+      - apprentice
+    networks:
+      - db-net
+      - front-net
+
+
   nginx:
     build: ./nginx
     environment:
@@ -28,3 +53,10 @@ services:
     depends_on:
     - web1
     - web2
+    networks:
+    - front-net
+
+networks:
+  db-net:
+    driver: bridge
+  front-net:

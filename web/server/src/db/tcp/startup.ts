@@ -42,7 +42,7 @@ export class Startup {
         return parts.find(p => p.startsWith(`${key}=`))?.substring(2)
     }
 
-    scramSASLInitialResponse(user:string): Buffer {
+    scramSASLInitialResponse(): Buffer {
         const method = 'SCRAM-SHA-256'
         const type = 'p'.charCodeAt(0)
         this.clientNonce = crypto.randomBytes(18).toString('base64');
@@ -62,7 +62,7 @@ export class Startup {
     authenticationSASL(chunks: Buffer): Buffer {
         const method = bin2Strings(chunks, 0, chunks.length)[0];
         assert(method.startsWith('SCRAM-SHA-256'))
-        return this.scramSASLInitialResponse(process.env.POSTGRES_USER ?? 'postgres')
+        return this.scramSASLInitialResponse()
     }
 
     H(clientKey: Buffer): Buffer {
