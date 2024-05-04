@@ -1,0 +1,4 @@
+services:
+  master:
+    ports:
+      - $POSTGRES_PORT:5432

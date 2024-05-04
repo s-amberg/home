@@ -6,7 +6,7 @@ import  { Client } from 'pg';
 
 export const pgConnect = async () => {
     const port = parseInt(process.env.POSTGRES_PORT ?? "5432");
-    const host = 'localhost' 
+    const host = process.env.POSTGRES_HOST 
     
     const client = new Client({
         user: process.env.POSTGRES_USER,

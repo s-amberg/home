@@ -21,7 +21,7 @@ export type Message = {
 export class TCPClient {
 
     port = parseInt(process.env.POSTGRES_PORT ?? "5432");
-    host = 'localhost' 
+    host = process.env.POSTGRES_HOST
     attempts = 0;
     maxAttempts = 10;
 

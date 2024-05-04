@@ -7,13 +7,11 @@ services:
     volumes:
       - ./master/data:/var/lib/postgresql/data
       - ./master/init.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - "$POSTGRES_PORT:5432"
+    expose:
+      - $POSTGRES_PORT
     restart: always
     networks:
       - db-net
-
-
         
   apprentice:
     image: postgres

@@ -3,7 +3,7 @@ include:
     env_file: .env
 
 services:
-
+      
   web1:
     restart: on-failure
     build: ./web
@@ -55,6 +55,8 @@ services:
     - web2
     networks:
     - front-net
+    restart: on-failure
+
 
 networks:
   db-net:
