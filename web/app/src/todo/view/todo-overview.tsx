@@ -62,26 +62,36 @@ export function TodoOverview() {
         else return asc ? 'asc' : 'desc'
     }
 
+    const importanceColors = [
+        '#0f9f00', '#0fbf00','#ffaf00','#ff9f00','#ff7f00','#ff5f00','#ff3f00','#ff1f00','#ff0f00','#ff0000',
+    ]
+
     const todoTable = (todos: Todo[]) => {
 
         return (
-            <MDBTable hover responsive>
+            <MDBTable hover responsive="md">
                 <MDBTableHead>
                     <tr>
-                        <th className={"sortable " + sortClass('id') } onClick={() => onSortClicked('id')}>#</th>
+                        {/* <th className={"sortable " + sortClass('id') } onClick={() => onSortClicked('id')}>#</th> */}
                         <th className={"sortable " + sortClass('name') } onClick={() => onSortClicked('name')}>Name</th>
                         <th className={"sortable " + sortClass('description') } onClick={() => onSortClicked('description')}>Description</th>
+                        <th className={"sortable " + sortClass('creationDate') } onClick={() => onSortClicked('creationDate')}>Created</th>
+                        <th className={"sortable " + sortClass('dueDate') } onClick={() => onSortClicked('dueDate')}>Due</th>
                         <th className={"sortable " + sortClass('doneDate') } onClick={() => onSortClicked('doneDate')}>Completed</th>
+                        <th className={"sortable " + sortClass('importance') } onClick={() => onSortClicked('importance')}>Importance</th>
                     </tr>
                     
                 </MDBTableHead>
                 <MDBTableBody>
                 {todos.map(todo => 
                     <tr key={todo.id}>
-                        <td>{todo.id}</td>
+                        {/* <td>{todo.id}</td> */}
                         <td>{todo.name}</td>
-                        <td>{todo.description}</td>
+                        <td><p className="overflow-clip">{todo.description}</p></td>
+                        <td>{todo.creationDate?.toLocaleDateString()}</td>
+                        <td>{todo.dueDate?.toLocaleDateString()}</td>
                         <td>{todo.doneDate?.toLocaleDateString()}</td>
+                        <td>{todo.importance}<MDBIcon className="ms-2" fas icon="exclamation" style={{color: importanceColors[todo.importance]}}/></td>
                         <td><Link to={`/todo/${todo.id}`}><MDBIcon fas icon="pen" /></Link></td>
                     </tr>
                 )} 

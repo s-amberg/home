@@ -11,6 +11,7 @@
 
 th.sortable {
     cursor: pointer;
+    position: relative;
 
     &.asc, &.desc {
         &::after {
@@ -26,4 +27,10 @@ th.sortable {
     &.desc::after {
         transform: rotate(90deg);
     }
+}
+.overflow-clip {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 20ch;
 }

@@ -9,9 +9,10 @@ import { Loader } from "../../lib/loader";
 
 export function TodoEdit() {
     const {id} = useParams()
-    const [todo, setTodo] = useState<Todo>({id: 0, name: " ", description: " ", doneDate: undefined});
+    const [todo, setTodo] = useState<Todo>({id: 0, name: " ", description: " ", doneDate: undefined, creationDate: new Date(), dueDate: undefined, importance: 1, state: 'OK'});
     const [todoDAO, _] = useState<TodoDAO>(DIContainer.getDiContainer.todoDAO);
     const [isLoading, setIsLoading] = useState(false);
+    const [dueDate, setDueDate] = useState<string|undefined>(undefined);
 
     useEffect(() => {
         const parsedId = (id ? parseInt(id) : undefined)
@@ -25,6 +26,10 @@ export function TodoEdit() {
         }
         load()
     }, [id, todoDAO])
+
+    useEffect(() => {
+        setDueDate(getDate(todo.dueDate))
+    }, [todo])
 
     
     const setDone = (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,19 +46,45 @@ export function TodoEdit() {
         const { name, value } = e.target;
         setTodo((previous: Todo) => ({...previous, [name]: value}))
     }
+    const handleNumericFormChange = (e: ChangeEvent<HTMLInputElement>) => {
+        
+        const { name, value } = e.target;
+        setTodo((previous: Todo) => ({...previous, [name]: +value}))
+    }
+    const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+        
+        const { name } = e.target;
+        const value: Date|null = e.target?.valueAsDate;
+
+        if(value && !isNaN(value.getTime()) && value.getUTCFullYear() > 1000) {
+            setTodo((previous: Todo) => ({...previous, [name]: new Date(value)}))
+        }
+        setDueDate(e.target.value)
+    }
+
+    const getDate = (key: Date|undefined) => {
+
+        const padding = (str: number|undefined) => {
+            const padded = "00" + str
+            return padded.substring(padded.length-2, padded.length)
+        }
+        return `${key?.getUTCFullYear()??''}-${padding((key?.getUTCMonth()??0) +1)}-${padding(key?.getUTCDate())}`
+    }
     
     return (
         <MDBContainer>
             {todo != null && 
             <MDBCard>
                 <MDBCardHeader>
-                    <h1>Edit Todo #{todo.id}</h1>
+                    <h1>Edit Todo #{id}</h1>
                 </MDBCardHeader>
                 <MDBCardBody>
                     <Loader isLoading={isLoading}>
                         <form onSubmit={save}>
                             <MDBInput name="name" onChange={handleFormChange} value={todo.name} className='mb-4' id='Name' type='text' aria-describedby='textExample1'/>
                             <MDBInput name="description" onChange={handleFormChange} value={todo.description}  className='mb-4' label='Description' id='description' type='text' aria-describedby='textExample2'/>
+                            <MDBInput name="importance" onChange={handleNumericFormChange} value={todo.importance}  className='mb-4' label='Importance' id='importance' type='number' min="0" max="10" aria-describedby='textExample3'/>
+                            <MDBInput name="dueDate" onChange={handleDateChange} value={dueDate} className='mb-4' label='Due Date' id='dueDate' type='date' aria-describedby='textExample4'/>
                             <div className='mb-4'>
                                 <MDBCheckbox
                                 id='done-date'

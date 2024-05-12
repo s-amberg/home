@@ -12,6 +12,10 @@ export class TodoService {
             name: `Todo ${i}`,
             description: 'A new todo',
             doneDate: i%3 === 0 ? new Date(new Date().setMonth(i%12)):  undefined,
+            creationDate: new Date(new Date().getTime() - i*1000*60*60*24),
+            dueDate: i%3 === 0 ? new Date(new Date().getTime() + 0.1*i*1000*60*60*24):  undefined,
+            state: 'OK',
+            importance: i % 10
         }
 
         return todo;
