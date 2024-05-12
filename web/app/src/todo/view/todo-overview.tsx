@@ -13,6 +13,8 @@ export function TodoOverview() {
     const [todoDAO, _] = useState<TodoDAO>(DIContainer.getDiContainer.todoDAO);
     const [todos, setTodos] = useState<Todo[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [sortKey, setSortKey] = useState<keyof Todo>('id');
+    const [asc, setAsc] = useState(true);
 
     
     useEffect(() => {
@@ -27,17 +29,49 @@ export function TodoOverview() {
         }
         load();
     }, [todoDAO])
+    
+    useEffect(() => {
+        const sort = () => {
+            
+            const newTodos = [...todos].sort((a, b) => {
+                const aProperty = a[sortKey]
+                const bProperty = b[sortKey]
+
+                const greater: number = asc ? -1 : 1
+    
+                if(aProperty == null) return -greater;
+                if(bProperty == null) return greater;
+
+                return aProperty < bProperty ? greater : -greater
+            });
+            setTodos(newTodos);
+        }
+
+        sort();
+
+    }, [sortKey, asc])
+
+    const onSortClicked = (newSortKey: keyof Todo) => {
+        setAsc(sortKey === newSortKey ? !asc : true)
+        setSortKey(newSortKey);
+    }
+
+    const sortClass = (columnSortKey: keyof Todo) => {
+        const isAcive = columnSortKey === sortKey
+        if(!isAcive) return ""
+        else return asc ? 'asc' : 'desc'
+    }
 
     const todoTable = (todos: Todo[]) => {
 
         return (
-            <MDBTable>
+            <MDBTable hover responsive>
                 <MDBTableHead>
                     <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Completed</th>
+                        <th className={"sortable " + sortClass('id') } onClick={() => onSortClicked('id')}>#</th>
+                        <th className={"sortable " + sortClass('name') } onClick={() => onSortClicked('name')}>Name</th>
+                        <th className={"sortable " + sortClass('description') } onClick={() => onSortClicked('description')}>Description</th>
+                        <th className={"sortable " + sortClass('doneDate') } onClick={() => onSortClicked('doneDate')}>Completed</th>
                     </tr>
                     
                 </MDBTableHead>

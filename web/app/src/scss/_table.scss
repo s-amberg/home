@@ -8,3 +8,22 @@
         // width: 6rem;
     }
 }
+
+th.sortable {
+    cursor: pointer;
+
+    &.asc, &.desc {
+        &::after {
+            content: '<';
+            color: $primary;
+            margin-left: 8px;
+            position: absolute;
+        }
+    }
+    &.asc::after {
+        transform: rotate(-90deg);
+    }
+    &.desc::after {
+        transform: rotate(90deg);
+    }
+}
