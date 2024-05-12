@@ -1,8 +1,9 @@
 import {Todo} from 'data/todo/todo'
+import { TodoDAO } from './todo-dao';
 
 export class TodoService {
 
-    constructor(){
+    constructor(private todoDAO: TodoDAO){
         
     }
 
@@ -21,7 +22,10 @@ export class TodoService {
         return todo;
     })
 
-    list(): Promise<Todo[]> {
+    async list(): Promise<Todo[]> {
+        const todos = await this.todoDAO.list();
+        console.log({todos})
+        return todos;
         return Promise.resolve(TodoService.defaultTodos)
     }
 
@@ -29,7 +33,10 @@ export class TodoService {
         return Promise.resolve(TodoService.defaultTodos.find(t => t.id === id));
     }
 
-    save(todo: Todo): Promise<Todo> {
+    async save(todo: Todo): Promise<Todo> {
+        const dbSaved = await this.todoDAO.save(todo);
+        console.log(dbSaved)
+        return dbSaved ?? todo;
         
         todo.id != null
             ? TodoService.defaultTodos[TodoService.defaultTodos.findIndex(t => t.id === todo.id)] = todo

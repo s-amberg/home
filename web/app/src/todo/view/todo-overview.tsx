@@ -72,7 +72,6 @@ export function TodoOverview() {
             <MDBTable hover responsive="md">
                 <MDBTableHead>
                     <tr>
-                        {/* <th className={"sortable " + sortClass('id') } onClick={() => onSortClicked('id')}>#</th> */}
                         <th className={"sortable " + sortClass('name') } onClick={() => onSortClicked('name')}>Name</th>
                         <th className={"sortable " + sortClass('description') } onClick={() => onSortClicked('description')}>Description</th>
                         <th className={"sortable " + sortClass('creationDate') } onClick={() => onSortClicked('creationDate')}>Created</th>
@@ -85,7 +84,6 @@ export function TodoOverview() {
                 <MDBTableBody>
                 {todos.map(todo => 
                     <tr key={todo.id}>
-                        {/* <td>{todo.id}</td> */}
                         <td>{todo.name}</td>
                         <td><p className="overflow-clip">{todo.description}</p></td>
                         <td>{todo.creationDate?.toLocaleDateString()}</td>

@@ -4,9 +4,9 @@ import { TodoService } from "./src/todo/todo-service";
 import { CORS } from "./src/middleware/cors";
 import { TodoCtrl } from "./src/todo/todo-ctrl";
 import path from "path";
-import { DBFrontend } from "./src/db/frontend";
-import { TCPClient } from "./src/db/tcp/client";
-// import { pgConnect } from "./src/dal/pg";
+
+import { DB } from "./src/dal/pg";
+import { TodoDAO } from "./src/todo/todo-dao";
 
 dotenv.config({
     path: "./.env"
@@ -14,7 +14,10 @@ dotenv.config({
 
 const app: Express = express();
 const port = process.env.SERVER_PORT || 3000;
-const service = new TodoService();
+
+const db = new DB();
+const todoDAO = new TodoDAO(db);
+const service = new TodoService(todoDAO);
 
 app.use(CORS)
 
@@ -25,11 +28,6 @@ new TodoCtrl(service, router);
 
 app.use('/api', router)
 //Routing
-
-const ioSocket = new DBFrontend(app)
-const tcpClient = new TCPClient((m: string) => ioSocket.sendMessage(m))
-tcpClient.connect()
-// pgConnect()
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Todo express server");
