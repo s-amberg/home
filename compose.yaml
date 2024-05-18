@@ -29,7 +29,7 @@ services:
     build: ./web
     hostname: web2
     environment:
-      - PORT=$SERVER_PORT 
+      - SERVER_PORT=$SERVER_PORT 
       - NODE_ENV=$MODE
       - POSTGRES_USER=$POSTGRES_USER
       - POSTGRES_PW=$POSTGRES_PW

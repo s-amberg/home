@@ -1,6 +1,8 @@
 export class HttpClient {
 
-    backend: string = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/api`;
+    host = process.env.NODE_ENV === 'development' ? `http://localhost` : `https://localhost`
+    port = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_SERVER_PORT : ''
+    baseUrl: string = `${this.host}:${this.port}/api`;
 
     checkStatus(response: Response): Promise<any> {
       return new Promise((resolve, reject) => {
@@ -28,8 +30,7 @@ export class HttpClient {
         return this.getAuthenticatedJson(endpoint, "token")
     }
     async getAuthenticatedJson(endpoint: string, token: string) {
-      console.info(this.backend)
-        const response = await fetch(`${this.backend}${endpoint}`, {
+        const response = await fetch(`${this.baseUrl}${endpoint}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -40,7 +41,7 @@ export class HttpClient {
     }
     
     post(endpoint: string, params: object) {
-        return fetch(`${this.backend}${endpoint}`, {
+        return fetch(`${this.baseUrl}${endpoint}`, {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
@@ -51,7 +52,7 @@ export class HttpClient {
     }
       
     postAuthenticatedJson(endpoint: string, token: string, params: object) {
-        return fetch(`${this.backend}${endpoint}`, {
+        return fetch(`${this.baseUrl}${endpoint}`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

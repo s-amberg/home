@@ -12,13 +12,6 @@ COPY --chown=node:node /server/package*.json ./server/
 USER node
 RUN npm run install-all
 
-# WORKDIR /home/node/app/app
-# RUN npm install
-
-# WORKDIR /home/node/app/server
-# RUN npm install
-
-# WORKDIR /home/node/app
 COPY --chown=node:node . .
 RUN npm run build
 
