@@ -27,8 +27,9 @@ export class TodoService {
         return todos;
     }
 
-    detail(id: number): Promise<Todo|undefined> {
-        return Promise.resolve(TodoService.defaultTodos.find(t => t.id === id));
+
+    async detail(id: number): Promise<Todo|undefined> {
+        return Promise.resolve(await this.todoDAO.find(id))
     }
 
     async save(todo: Todo): Promise<Todo> {

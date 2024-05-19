@@ -40,7 +40,18 @@ export class TodoDAO {
         }
 
     }
-
+    async find(id: number): Promise<Todo|undefined>{
+        try {
+            const result = await this.db.query(`select * from todo where id = ${id}`, undefined)
+            if (result.rows.length > 0) {
+                return TodoDAO.rowToTodo(result.rows[0]);
+            } else {
+                return undefined;
+            }
+        }catch(e) {
+            return undefined
+        }
+    }
     async save(todo: Todo): Promise<Todo|undefined> {
         try {
             const values = [todo.id, todo.name, todo.description, todo.doneDate, todo.dueDate, todo.creationDate, todo.importance, todo.state]
