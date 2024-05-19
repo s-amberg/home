@@ -1,0 +1,25 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLGeneric</id><coordinates><x>80</x><y>180</y><w>690</w><h>220</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;subsystem&gt;&gt;
+Backend</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>140</x><y>240</y><w>140</w><h>100</h></coordinates><panel_attributes>symbol=component
+Controller
+
+-..
+
+Express.js
+Typescript</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>360</x><y>240</y><w>140</w><h>90</h></coordinates><panel_attributes>symbol=component
+Service
+
+-..
+
+Typescript</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>580</x><y>240</y><w>140</w><h>100</h></coordinates><panel_attributes>symbol=component
+DAL
+
+-..
+
+node-postgres
+Typescript
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>280</y><w>110</w><h>30</h></coordinates><panel_attributes>lt=.&gt;</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>490</x><y>280</y><w>110</w><h>30</h></coordinates><panel_attributes>lt=.&gt;</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>310</x><y>320</y><w>110</w><h>100</h></coordinates><panel_attributes>lt=[Core]&lt;.
+</panel_attributes><additional_attributes>20;80;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>330</y><w>120</w><h>80</h></coordinates><panel_attributes>lt=.&gt;</panel_attributes><additional_attributes>10;10;100;60</additional_attributes></element><element><id>Relation</id><coordinates><x>40</x><y>270</y><w>120</w><h>40</h></coordinates><panel_attributes>lt=[Frontend].
+</panel_attributes><additional_attributes>40;20;100;20</additional_attributes></element><element><id>Relation</id><coordinates><x>710</x><y>270</y><w>90</w><h>40</h></coordinates><panel_attributes>lt=[DB].
+</panel_attributes><additional_attributes>60;20;10;20</additional_attributes></element></diagram>
