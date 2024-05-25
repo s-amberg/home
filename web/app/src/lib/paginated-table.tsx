@@ -15,7 +15,6 @@ export function PaginatedTable<T>({itemsPerPage, items, table}: {itemsPerPage: n
     useEffect(() => {
         const start = Math.min(items.length, itemsPerPage * (page-1));
         const end = Math.min(items.length, start + itemsPerPage);
-        console.info(page, start, end)
 
         setShownItems(items.slice(start, end))
     } , [page, itemsPerPage, items])
@@ -29,8 +28,6 @@ export function PaginatedTable<T>({itemsPerPage, items, table}: {itemsPerPage: n
 
         const middleLow = Math.max(1 + padding, page) //lower bound check
         const middle = Math.min(middleLow, numPages - padding) //upper bound check
-
-        console.info({middleLow}, {middle})
 
         return Array.from({length: (shownPages)}, (_, i) => i + middle - padding)
     }

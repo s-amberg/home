@@ -6,7 +6,9 @@ upstream loadbalancer {
 
 server {
   listen 80;
-  server_name localhost;
+  server_name localhost nginx;
+  return 301 https://$host$request_uri;
+
   location / {
     proxy_pass http://loadbalancer;
   }

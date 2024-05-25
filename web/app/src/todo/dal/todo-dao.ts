@@ -9,10 +9,7 @@ export class TodoDAO {
 
     async listTodos(): Promise<Todo[]> {
         const todosDTO = (await this.httpClient.get("/todos")) as TodoDTO[]
-        const todos = todosDTO.map(todo => TodoConverter.TodoFromDTO(todo))
-
-        console.info({todos})
-        return todos
+        return todosDTO.map(todo => TodoConverter.TodoFromDTO(todo))
     }
 
     async detail(id: number): Promise<Todo|undefined> {
