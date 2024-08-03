@@ -8,12 +8,12 @@ export class TodoService {
     }
 
     async list(): Promise<Todo[]> {
-        return await this.todoDAO.list()
+        return this.todoDAO.list()
     }
 
 
     async detail(id: number): Promise<Todo|undefined> {
-        return Promise.resolve(await this.todoDAO.find(id))
+        return this.todoDAO.find(id)
     }
 
     async save(todo: Todo): Promise<Todo> {

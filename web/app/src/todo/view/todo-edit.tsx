@@ -2,15 +2,16 @@ import { MDBBtn, MDBCard, MDBCardBody, MDBCardHeader, MDBCheckbox, MDBContainer,
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { DIContainer } from "../../DIContainer";
 import { TodoDAO } from "../dal/todo-dao";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import React from "react";
 import { Todo } from "data/todo/todo";
 import { Loader } from "../../lib/loader";
 
 export function TodoEdit() {
+    const navigate = useNavigate();
     const {id} = useParams()
-    const [todo, setTodo] = useState<Todo>({id: 0, name: " ", description: " ", doneDate: undefined, creationDate: new Date(), dueDate: undefined, importance: 1, state: 'OK'});
-    const [todoDAO, _] = useState<TodoDAO>(DIContainer.getDiContainer.todoDAO);
+    const todoDAO: TodoDAO = DIContainer.getDiContainer.todoDAO;
+    const [todo, setTodo] = useState<Todo>({id: undefined, name: '', description: '', doneDate: undefined, creationDate: new Date(), dueDate: undefined, importance: 1, state: 'OK'});
     const [isLoading, setIsLoading] = useState(false);
     const [dueDate, setDueDate] = useState<string|undefined>(undefined);
 
@@ -25,7 +26,7 @@ export function TodoEdit() {
             };
         }
         load()
-    }, [id, todoDAO])
+    }, [id])
 
     useEffect(() => {
         setDueDate(getDate(todo.dueDate))
@@ -39,7 +40,11 @@ export function TodoEdit() {
 
     const save = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if(todo) setTodo(await todoDAO.save(todo));
+        if(todo) {
+            const saved = await todoDAO.save(todo)
+            setTodo(saved);
+            navigate('/todos');
+        }
     }
     const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
         

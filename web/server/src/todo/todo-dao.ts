@@ -1,5 +1,6 @@
 import { Todo } from "data/todo/todo";
 import { DB } from "../dal/pg";
+import { QueryResult } from "pg";
 
 interface TodoRow {
     id: number
@@ -54,24 +55,38 @@ export class TodoDAO {
         }
     }
 
+    
+    private async createQuery(todo: Todo): Promise<QueryResult<any>> {
+        const values = [todo.name, todo.description, todo.doneDate, todo.dueDate, todo.creationDate, todo.importance, todo.state];
+        return this.db.query(
+            `insert into todo(name, description, done_date, due_date, creation_date, importance, state) values($1, $2, $3, $4, $5, $6, $7) returning *;`,
+            values
+        );
+    }
+    
+    private async upsertQuery(todo: Todo): Promise<QueryResult<any>> {
+
+        const values = [todo.id, todo.name, todo.description, todo.doneDate, todo.dueDate, todo.creationDate, todo.importance, todo.state]
+    
+        return this.db.query(
+            `insert into todo values($1, $2, $3, $4, $5, $6, $7, $8)
+            on conflict(id)
+            do update set
+                id = EXCLUDED.id,
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                done_date = EXCLUDED.done_date,
+                due_date = EXCLUDED.due_date,
+                creation_date = EXCLUDED.creation_date,
+                importance = EXCLUDED.importance,
+                state = EXCLUDED.state returning *;`, 
+            values
+        )
+    }
+
     async save(todo: Todo): Promise<Todo|undefined> {
-        try {
-            const values = [todo.id, todo.name, todo.description, todo.doneDate, todo.dueDate, todo.creationDate, todo.importance, todo.state]
-            
-            const result = await this.db.query(
-                `insert into todo values($1, $2, $3, $4, $5, $6, $7, $8)
-                on conflict(id)
-                do update set
-                    id = EXCLUDED.id,
-                    name = EXCLUDED.name,
-                    description = EXCLUDED.description,
-                    done_date = EXCLUDED.done_date,
-                    due_date = EXCLUDED.due_date,
-                    creation_date = EXCLUDED.creation_date,
-                    importance = EXCLUDED.importance,
-                    state = EXCLUDED.state returning *;`, 
-                values
-            )
+        try {            
+            const result = await (todo.id != null ? this.upsertQuery(todo) : this.createQuery(todo))
             const todoRow = result.rows[0] as TodoRow
             return TodoDAO.rowToTodo(todoRow)
 

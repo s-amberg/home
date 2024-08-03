@@ -14,6 +14,7 @@ export const AppRoutes = () => {
             <Route path="/connector" element={<DbConnector/>}></Route>
             <Route path="/engravings" element={<Engravings/>}></Route>
             <Route path="/todos" element={<TodoOverview/>}></Route>
+            <Route path="/todo/new" element={<TodoEdit/>}></Route>
             <Route path="/todo/:id" element={<TodoEdit/>}></Route>
         </Routes>
     )

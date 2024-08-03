@@ -103,7 +103,12 @@ export function TodoOverview() {
         <MDBContainer>
             <MDBCard>
                 <MDBCardHeader>
-                    <h1>All Todos</h1>
+                    <h1>
+                        {'All Todos '}
+                        <Link to='/todo/new'>
+                            <MDBIcon fas icon="plus" />
+                        </Link>
+                    </h1>
                 </MDBCardHeader>
                 <MDBCardBody>
 
