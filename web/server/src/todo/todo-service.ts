@@ -24,9 +24,7 @@ export class TodoService {
 
     async list(): Promise<Todo[]> {
         const todos = await this.todoDAO.list();
-        console.log({todos})
         return todos;
-        return Promise.resolve(TodoService.defaultTodos)
     }
 
     detail(id: number): Promise<Todo|undefined> {
@@ -37,11 +35,5 @@ export class TodoService {
         const dbSaved = await this.todoDAO.save(todo);
         console.log(dbSaved)
         return dbSaved ?? todo;
-        
-        todo.id != null
-            ? TodoService.defaultTodos[TodoService.defaultTodos.findIndex(t => t.id === todo.id)] = todo
-            : TodoService.defaultTodos.push(todo)
-
-        return Promise.resolve(todo);
     }
 }
