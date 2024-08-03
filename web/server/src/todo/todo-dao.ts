@@ -14,11 +14,11 @@ interface TodoRow {
 
 export class TodoDAO {
 
-    constructor(private db: DB){
+    constructor(private readonly db: DB){
 
     }
 
-    static rowToTodo = (row: TodoRow): Todo => {
+    private static rowToTodo = (row: TodoRow): Todo => {
         return {
             id: row.id,
             name: row.name,
@@ -40,6 +40,7 @@ export class TodoDAO {
         }
 
     }
+    
     async find(id: number): Promise<Todo|undefined>{
         try {
             const result = await this.db.query(`select * from todo where id = ${id}`, undefined)
@@ -52,6 +53,7 @@ export class TodoDAO {
             return undefined
         }
     }
+
     async save(todo: Todo): Promise<Todo|undefined> {
         try {
             const values = [todo.id, todo.name, todo.description, todo.doneDate, todo.dueDate, todo.creationDate, todo.importance, todo.state]

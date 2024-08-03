@@ -1,30 +1,14 @@
 import {Todo} from 'data/todo/todo'
-import { TodoDAO } from './todo-dao';
+import {TodoDAO} from './todo-dao';
 
 export class TodoService {
 
-    constructor(private todoDAO: TodoDAO){
+    constructor(private readonly todoDAO: TodoDAO){
         
     }
 
-    static defaultTodos: Todo[] = Array.from(Array(1111).keys()).map(i => {
-        const todo: Todo =  {
-            id: i,
-            name: `Todo ${i}`,
-            description: 'A new todo',
-            doneDate: i%3 === 0 ? new Date(new Date().setMonth(i%12)):  undefined,
-            creationDate: new Date(new Date().getTime() - i*1000*60*60*24),
-            dueDate: i%3 === 0 ? new Date(new Date().getTime() + 0.1*i*1000*60*60*24):  undefined,
-            state: 'OK',
-            importance: i % 10
-        }
-
-        return todo;
-    })
-
     async list(): Promise<Todo[]> {
-        const todos = await this.todoDAO.list();
-        return todos;
+        return await this.todoDAO.list()
     }
 
 
@@ -33,8 +17,8 @@ export class TodoService {
     }
 
     async save(todo: Todo): Promise<Todo> {
-        const dbSaved = await this.todoDAO.save(todo);
+        const dbSaved = await this.todoDAO.save(todo)
         console.log(dbSaved)
-        return dbSaved ?? todo;
+        return dbSaved ?? todo
     }
 }

@@ -8,7 +8,7 @@
 ## Running the app
 - You need a running postgres instance for the DB. The connection is defined in the .env file in the web/server folder. Default is localhost:5432 user=simon pw=1234, database="todo".
 - To run in dev you can use "npm start" from /web to run both back and frontend and "npm run tsc" to build the shared module. You can also individually start the front and backend.
-- The frontend is started under localhost:\<PORT>/app. The port us defined in the .env file, default is 8080.
+- The frontend is started under localhost:\<PORT>/app. The port is defined in the .env file, default is 8080.
 
 ## Docker
 - Start the docker compose from the root folder with "docker compose up"
