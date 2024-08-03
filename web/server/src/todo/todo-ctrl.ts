@@ -22,10 +22,12 @@ export class TodoCtrl extends Controller<Todo, TodoDTO> {
             res.json(todoDTOS);
         });
           
-        app.get("/todo/:id", async (req: Request, res: Response) => {
-            const id = parseInt(req.params['id']);
-                  const todo = await this.todoService.detail(id)
-                  res.json(todo)
+        super.get(app, "/todo/:id")(async (req: Request) => {
+            const id = parseInt(req.params['id'])
+            const maybeTodo = await this.todoService.detail(id)
+            
+            if (maybeTodo == null) throw Error("todo not found");
+            return maybeTodo;
         });
           
         super.post(app, "/todo", Controller.jsonParser)(async (todo: Todo, req: Request) => {

@@ -34,9 +34,14 @@ export abstract class Controller<T, DTO> {
 
         return (call: (request: Request) => Promise<T>) => app.get(path, async (req: Request, res: Response) => {
 
-            const responseJSON: T = await call(req)
-            res.status(200)
-            res.json(this.toDTO(responseJSON))
+            try {
+                const responseJSON: T = await call(req)
+                res.status(200)
+                res.json(this.toDTO(responseJSON))
+            } catch (e) {
+                res.status(404)
+                res.json({error: "result not found"})
+            }
         })
     }
 }
