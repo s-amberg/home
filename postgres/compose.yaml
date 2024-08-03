@@ -5,6 +5,12 @@ services:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PW
       POSTGRES_DB: todo
+      POSTGRE_PGAUDIT_LOG: READ,WRITE
+      POSTGRE_LOG_HOSTNAME: true
+      POSTGRE_REPLICATION_MODE: master
+      POSTGRE_REPLICATION_USER: $POSTGRES_USER
+      POSTGRE_REPLICATION_PASSWORD: $POSTGRES_PW
+      ALLOW_EMPTY_PASSWORD: yes
     volumes:
       - ./master/data:/var/lib/postgresql/data
       - ./master/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -19,8 +25,16 @@ services:
     environment:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PW
+      POSTGRES_DB: todo
       POSTGRES_MASTER_HOST: master
       POSTGRES_MASTER_PORT: $POSTGRES_PORT
+      POSTGRES_PGAUDIT_LOG: READ,WRITE
+      POSTGRES_LOG_HOSTNAME: true
+      POSTGRES_REPLICATION_MODE: slave
+      POSTGRES_REPLICATION_USER: $POSTGRES_USER
+      POSTGRES_REPLICATION_PASSWORD: $POSTGRES_PW
+    expose:
+      - $POSTGRES_PORT
     volumes:
       - ./apprentice/data:/var/lib/postgresql/data
     restart: always

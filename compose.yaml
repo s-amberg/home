@@ -44,7 +44,6 @@ services:
       - db-net
       - front-net
 
-
   nginx:
     build: ./nginx
     environment:
@@ -58,7 +57,6 @@ services:
     networks:
     - front-net
     restart: on-failure
-
 
 networks:
   db-net:
