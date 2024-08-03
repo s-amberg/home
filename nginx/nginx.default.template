@@ -1,7 +1,7 @@
 
 upstream loadbalancer {
-  server web1:${SERVER_PORT};
-  server web2:${SERVER_PORT};
+  server web1:${SERVER_PORT} max_fails=1 fail_timeout=10s;
+  server web2:${SERVER_PORT} max_fails=1 fail_timeout=10s;
 }
 
 server {
