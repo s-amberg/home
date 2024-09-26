@@ -1,5 +1,7 @@
 # DSy Todo List
 
+This is a fork
+
 ## Installation
 - To set up the database initially run "docker compose up" in /postgres.
 - By default the init.sql script is run. If you set up your database in a different way make sure the migration scripts in /web/server/dal/migrations are applied to the database.
